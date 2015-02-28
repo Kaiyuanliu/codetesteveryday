@@ -6,6 +6,7 @@ To create 200 activation code/ coupon code with python
 """
 import string
 import random
+from collections import OrderedDict
 
 class ActivationCode(object):
 
@@ -18,6 +19,7 @@ class ActivationCode(object):
 		self._length = length
 		self._flag_code = flag_code
 		self._letters_and_numbers = string.ascii_letters+string.digits
+		self._code_dict = OrderedDict() # To make sure the code is ordered as created in the dict
 
 	"""
 	get flag code
@@ -47,7 +49,9 @@ class ActivationCode(object):
 		self._length = length if length else self._length
 		prefix = hex(int(id))[2:] + self._flag_code
 		suffix_length = self._length - len(prefix)
-		return prefix + ''.join([random.choice(self._letters_and_numbers) for i in range(suffix_length)])
+		new_code = prefix + ''.join([random.choice(self._letters_and_numbers) for i in range(suffix_length)])
+		self._code_dict[str(id)] = new_code
+		return new_code
 
 	"""
 	get the id from activation code
@@ -61,10 +65,20 @@ class ActivationCode(object):
 		except ValueError:
 			raise ValueError("Wrong activation code, please try again!")
 		return real_id
+
+	"""
+	write all the activation code to file
+	@param dest_file: the file name
+	"""
+	def write_code_to_txt(self, dest_file="code.txt"):
+		with open(dest_file, "w") as f:
+			f.write("\n".join([key+" "+value for key,value in self._code_dict.items()]))
+
 	
 if __name__ == '__main__':
 	activation_code = ActivationCode()
 	for i in range(10, 3010, 15):
 		code = activation_code.create_code(i)
 		id = activation_code.get_id(code)
-		print "{code} => {id}".format(code=code, id=id)
+		print "{id}=>{code}".format(id=id, code=code)
+	activation_code.write_code_to_txt()
