@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import datetime
 from collections import OrderedDict
 from sqlalchemy import create_engine, Column, String, Integer, Date
