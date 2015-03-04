@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+任一个英文的纯文本文件，统计其中的单词出现的个数。
+calculate word occurrence from any file
+"""
 import string
 from collections import Counter, defaultdict, OrderedDict
 from operator import itemgetter
