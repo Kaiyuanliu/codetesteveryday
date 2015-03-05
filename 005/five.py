@@ -72,16 +72,16 @@ class ResizeImage(object):
     invoke resizing function according to the method
     @param method: which method is used to resize images, default is glob
     """
-    def resize_all_images(self, method="glob"):
+    def resize_all_images(self, method="glob", path=os.getcwd()):
         result = getattr(self, "_resize_all_images_by_"+method, None)
         if result is not None:
-           result()
+            result(path)
 
     """
     resize all the images from some directory by using glob method
     @param path: the path of directory, default is the current directory
     """
-    def _resize_all_images_by_glob(self, path=os.getcwd()):
+    def _resize_all_images_by_glob(self, path):
         import glob
         images_list = [image for image_type in IMAGES_TYPE for image in glob.glob(os.path.abspath(os.path.join(path, image_type)))]
         for one_image in images_list:
@@ -91,7 +91,7 @@ class ResizeImage(object):
     resize all the images from some directory by using os.walk and fnmatch
     @param path: the path of directory, default is the current directory
     """
-    def _resize_all_images_by_oswalk(self, path=os.getcwd()):
+    def _resize_all_images_by_oswalk(self, path):
         import fnmatch
         images_list = [os.path.abspath(os.path.join(root, file_name)) for root, subdir, filenames in os.walk(path)
                                                     for image_type in IMAGES_TYPE
