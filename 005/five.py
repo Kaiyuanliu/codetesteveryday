@@ -93,7 +93,7 @@ class ResizeImage(object):
     """
     def _resize_all_images_by_oswalk(self, path):
         import fnmatch
-        images_list = [os.path.abspath(os.path.join(root, file_name)) for root, subdir, filenames in os.walk(path)
+        images_list = [os.path.abspath(os.path.join(root, file_name).replace('\\', '/')) for root, subdir, filenames in os.walk(path)
                                                     for image_type in IMAGES_TYPE
                                                     for file_name in fnmatch.filter(filenames, image_type)]
 
