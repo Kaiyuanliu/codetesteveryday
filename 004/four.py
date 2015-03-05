@@ -29,6 +29,7 @@ class CheckWord(object):
     """
     def read_word_from_file(self, org_file="word.txt", returned=False, case_sensitive=False):
         with open(org_file, "r") as f:
+            self._long_test = ""
             for line in f:
                 self._long_test += line if case_sensitive else line.lower()
         if returned:
