@@ -14,6 +14,11 @@ class FilteredWordStar(object):
         with open(word_file, "r") as f:
             self._words = [line.strip() for line in f]
 
+    """
+    replace filtered word with stars in a string text
+    @param text: the text that user inputs
+    @return: replaced text
+    """
     def filter_word(self, text=""):
         if self._words is None:
             self.read_words_from_file()
