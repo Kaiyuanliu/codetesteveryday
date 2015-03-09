@@ -2,7 +2,7 @@
 
 """
 你有一个目录，放了你一个月的日记，都是 txt，为了避免分词的问题，假设内容都是英文，请统计出你认为每篇日记最重要的词。
-count the most important word in a diary file(txt file) from a directory. suppose that all the content are English words.
+count the most important word in a diary file(txt file) from a directory. suppose that all the content are English words
 """
 
 import os
@@ -10,6 +10,7 @@ import string
 from collections import Counter
 
 CHECK_FILE_TYPE = ['*.txt']
+
 
 class diaryChecker(object):
 
@@ -40,7 +41,8 @@ class diaryChecker(object):
         if os.path.exists(path):
             import glob
             self._path = path
-            files_list = [files for file_type in CHECK_FILE_TYPE for files in glob.glob(os.path.abspath(os.path.join(self._path, file_type)))]
+            files_list = [files for file_type in CHECK_FILE_TYPE for files in glob.glob(
+                                    os.path.abspath(os.path.join(self._path, file_type)))]
             for one_file in files_list:
                 most_word, diary_name = self.check_diary(one_file)
                 self._diary_dict[diary_name] = most_word
@@ -53,7 +55,7 @@ class diaryChecker(object):
     """
     def check_diary(self, diary_file="/diary.txt", case_sensitive=False):
         long_text = ""
-        diary_name = diary_file.rsplit("/", 1)[1]
+        diary_name = os.path.basename(diary_file)
         with open(diary_file, "r") as f:
             for line in f:
                 long_text += line if case_sensitive else line.lower()

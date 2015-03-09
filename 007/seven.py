@@ -11,8 +11,9 @@ ONE_LINE_COMMENT_TYPE = ('#', )
 MULTIPLE_LINE_COMMENT_TYPE = ('"""', )
 FILE_TYPE = ["*.py"]
 
-#in order to ignore the first line
+# in order to ignore the first line
 IGNORE_LINES = 1
+
 
 class CodeChecker(object):
 
@@ -21,14 +22,14 @@ class CodeChecker(object):
 
     def read_file(self, file_path):
         result_dict = defaultdict(int)
-        file_name = file_path.rsplit("/", 1)[1]
+        file_name = os.path.basename(file_path)
 
         with open(file_path, "r") as f:
             # remove lines on the top
             for _ in range(IGNORE_LINES):
                 next(f)
 
-            #TODO: the logic here should be improved later
+            # TODO: the logic here should be improved later
             counter = 0
             for number, line in enumerate(f, 1):
                 if counter != 0:
