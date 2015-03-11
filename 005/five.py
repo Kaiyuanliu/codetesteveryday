@@ -7,9 +7,10 @@ resizing all the images from a directory, which makes the resolution of images i
 import os
 from PIL import Image
 
-IPHONE5_IMAGE_WIDTH = 1136 # iPhone5 width
-IPHONE5_IMAGE_HEIGHT = 640 # iPhone5 height
+IPHONE5_IMAGE_WIDTH = 1136  # iPhone5 width
+IPHONE5_IMAGE_HEIGHT = 640  # iPhone5 height
 IMAGES_TYPE = ['*.jpg', '*.jpeg', '*png', '*.tif', '*.tiff']  # image type allowed
+
 
 class ResizeImage(object):
 
@@ -41,11 +42,11 @@ class ResizeImage(object):
     @return: resized image
     """
     def resize_image(self, dst_image=None,
-                    dst_width=IPHONE5_IMAGE_WIDTH,
-                    dst_height=IPHONE5_IMAGE_HEIGHT,
-                    quality=75):
+                     dst_width=IPHONE5_IMAGE_WIDTH,
+                     dst_height=IPHONE5_IMAGE_HEIGHT,
+                     quality=75):
 
-        org_image_name, org_image_type = tuple(self._org_image.split("."))
+        org_image_name, org_image_type = os.path.splitext(self._org_image)
         org_width, org_height = self._img.size
         width_ratio = None
         height_ratio = None
@@ -65,8 +66,11 @@ class ResizeImage(object):
                 ratio = temp_ratio[0] if temp_ratio else ratio
 
         if ratio != 1:
-            dst_image = dst_image if dst_image else org_image_name+"_resized."+org_image_type
-            return self._img.resize((int(org_width*ratio), int(org_height*ratio)), Image.ANTIALIAS).save(dst_image, quality=quality)
+            extra_text = dst_image if dst_image else 'resized'
+            dst_image = org_image_name+"_"+extra_text+org_image_type
+            return self._img.resize(
+                                    (int(org_width*ratio), int(org_height*ratio)),
+                                    Image.ANTIALIAS).save(dst_image, quality=quality)
 
     """
     invoke resizing function according to the method
@@ -83,7 +87,8 @@ class ResizeImage(object):
     """
     def _resize_all_images_by_glob(self, path):
         import glob
-        images_list = [image for image_type in IMAGES_TYPE for image in glob.glob(os.path.abspath(os.path.join(path, image_type)))]
+        images_list = [image for image_type in IMAGES_TYPE
+                       for image in glob.glob(os.path.abspath(os.path.join(path, image_type)))]
         for one_image in images_list:
             self.open(one_image).resize_image()
 
@@ -93,18 +98,15 @@ class ResizeImage(object):
     """
     def _resize_all_images_by_oswalk(self, path):
         import fnmatch
-        images_list = [os.path.abspath(os.path.join(root, file_name).replace('\\', '/')) for root, subdir, filenames in os.walk(path)
-                                                    for image_type in IMAGES_TYPE
-                                                    for file_name in fnmatch.filter(filenames, image_type)]
+        images_list = [os.path.abspath(os.path.join(root, file_name).replace('\\', '/'))
+                       for root, subdir, filenames in os.walk(path)
+                       for image_type in IMAGES_TYPE
+                       for file_name in fnmatch.filter(filenames, image_type)]
 
         for one_image in images_list:
             self.open(one_image).resize_image()
 
 
-
 if __name__ == "__main__":
     resize_image_ = ResizeImage()
     resize_image_.resize_all_images("oswalk")
-
-
-
