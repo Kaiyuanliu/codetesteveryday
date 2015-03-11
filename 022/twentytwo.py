@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 """
-copy and pasty 005, just need to modify the constants, the code is reuseable
+copy and paste 005, just need to modify the constants, the code is reuseable
+It is better to import 005 file here and use it directly,
+but the directory name is not a valid python directory, so I just copy and paste it.
 """
 import os
 from PIL import Image
